@@ -1,15 +1,15 @@
-<% if (typeof successmessages !== 'undefined' && successmessages && successmessages.length > 0) { %>
+<% if (typeof success !== 'undefined' && success && success.length > 0) { %>
 <div class = "alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-    <%= successmessages %>
+    <%= success %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
 </div>
 <% } %>
 
 <!--Error Flash-->
-<% if (typeof errormessages !== 'undefined' && errormessages && errormessages.length > 0) { %>
+<% if (typeof error !== 'undefined' && error && error.length > 0) { %>
 <div class = "alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-    <%= errormessages %>
+    <%= error %>
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 
 </div>

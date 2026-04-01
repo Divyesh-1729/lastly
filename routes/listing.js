@@ -26,6 +26,9 @@ router.route("/") //Using route chaining to keep the code clean and organized
 //New route
 router.get("/new", isLoggedIn, listingController.renderNewForm); //isLoggedIn middleware to check if user is logged in before rendering new listing form);
 
+//Search route
+router.get("/search", wrapAsync(listingController.searchListings));
+
 
 
 

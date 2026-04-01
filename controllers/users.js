@@ -38,7 +38,7 @@ module.exports.renderLoginForm = (req, res) => {
 
 
 module.exports.renderSignupForm = (req, res) => {
-    res.render("users/signup");  //Render signup form
+    res.render("users/signup.ejs");  //Render signup form
 };
 
 

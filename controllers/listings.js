@@ -27,7 +27,7 @@ module.exports.showListing = async (req, res) => {
         return;
     }
 
-    if (!listing.geometry || !Array.isArray(listing.geometry.coordinates) || listing.geometry.coordinates.length !== 2) {
+   if (!listing.geometry?.coordinates?.length) {
         const geo = await forwardGeocode([listing.location, listing.country].filter(Boolean).join(", "));
         if (geo) {
             listing.geometry = { type: "Point", coordinates: [geo.lng, geo.lat] };
@@ -81,10 +81,8 @@ module.exports.renderEditForm = async (req, res) => {
 
 
 
-    let originalImageUrl = listing.image && listing.image.url ? listing.image.url : "";
-    if (originalImageUrl) {
-        originalImageUrl = originalImageUrl.replace("/upload","/upload/h_300,w_250");
-    }
+    let originalImageUrl = listing.image?.url || "";
+    originalImageUrl = originalImageUrl.replace("/upload", "/upload/h_300,w_250");
 
     res.render("listings/edit", {listing, originalImageUrl});
 }
@@ -124,4 +122,22 @@ module.exports.destroyListing = async (req, res) => {
     console.log(deletedListing);
     req.flash("success", "Successfully deleted the listing!"); //Flash message after deleting a listing
     res.redirect("/listings");
+}
+
+module.exports.searchListings = async (req, res) => {
+    let {q} = req.query;
+    if(!q) {
+        req.flash("error", "Please enter a search term!");
+        return res.redirect("/listings");
+    }
+
+    const searchResults = await Listing.find({
+        $or: [
+            {title: {$regex: q, $options: 'i'}},
+            {location: {$regex: q, $options: 'i'}},
+            {country: {$regex: q, $options: 'i'}}
+        ]
+    });
+
+    res.render("listings/index", {allListings: searchResults});
 }

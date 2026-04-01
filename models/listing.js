@@ -20,6 +20,26 @@ const listingSchema = new Schema({
   price: { type: Number, required: true },
   location: String,
   country: String,
+  owner: {
+    type: Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  reviews: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Review'
+    }
+  ],
+  geometry: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      default: 'Point'
+    },
+    coordinates: {
+      type: [Number]
+    }
+  }
 });
 
 //Schema → Defines the structure

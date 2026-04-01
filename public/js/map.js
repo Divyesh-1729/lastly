@@ -1,31 +1,30 @@
 function initMap() {
   const fallbackCenter = { lat: 18.5204, lng: 73.8567 };
-  const mapEl = document.getElementById("map");
-  if (!mapEl) return;
-
-  const lat = Number(mapEl.dataset.lat);
-  const lng = Number(mapEl.dataset.lng);
-  const title = mapEl.dataset.title || "Listing";
-  const locationText = mapEl.dataset.locationText || "";
+   const mapEl = document.getElementById("map");
+  const lat = mapEl ? Number(mapEl.dataset.lat) : NaN;
+  const lng = mapEl ? Number(mapEl.dataset.lng) : NaN;
+  const title = mapEl ? mapEl.dataset.title : "";
+  const locationText = mapEl ? mapEl.dataset.locationText : "";
 
   const hasCoords = Number.isFinite(lat) && Number.isFinite(lng);
   const center = hasCoords ? { lat, lng } : fallbackCenter;
 
   const map = new google.maps.Map(mapEl, {
-    center,
-    zoom: hasCoords ? 12 : 5,
-    mapTypeId: "roadmap",
+    center: center,
+    zoom: 12,
+    mapTypeId: "roadmap"
+
   });
 
   if (hasCoords) {
     const marker = new google.maps.Marker({
       position: center,
       map,
-      title,
+     title: title || "Listing",
     });
 
     const info = new google.maps.InfoWindow({
-      content: `<div><strong>${title}</strong><br/>${locationText}</div>`,
+      content: `<div><strong>${(title || "Listing")}</strong><br/>${(locationText || "")}</div>`,
     });
     marker.addListener("click", () => info.open({ anchor: marker, map }));
   }

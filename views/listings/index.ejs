@@ -1,10 +1,101 @@
 <% layout("/layouts/boilerplate") %>
 <body>
-    <h3>All Listings</h3>
+    <style>
+        #filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+            padding: 0.5rem 0.5rem;
+            align-items: center;
+        }
+        .filter{
+            text-align: center;
+            padding: 0.5rem 0;
+            opacity:0.7;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .filter:hover{
+            opacity:1;
+            cursor: pointer;
+        }
+        .filter i{
+            font-size: 1.5rem;
+            margin-bottom: 0.3rem;
+        }
+        .filter p{
+            font-size: 0.85rem;
+            margin: 0;
+            font-weight: 500;
+        }
+        .tax-info{
+            display: none;
+            font-size: 0.8rem;
+            color: grey;
+        }
+        .tax-toggle{
+            border: 1px solid black;
+            border-radius: 1rem;
+            height: 3rem;
+            padding: 0.5rem 1rem;
+            display:flex;
+            align-items: center;
+            margin-left: auto;
+        }
+        </style>
+   <%# Displaying flash success messages. Instead of here we will flash them in boilerplate.ejs so that they appear on all pages. %>
+    <!-- <h3>All Listings</h3> -->
 <!----  <form method ="GET" action="/listings/new">
         <button>Create New Listing</button>
     </form> -->
-    <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4">
+    <div id="filters">
+        <div class="filter">
+           <div> <i class="fa-solid fa-fire"></i></div>
+           <p> Trending</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-bed"></i></div>
+           <p> Bedrooms</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-mountain"></i></div>
+           <p> Mountains</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-mountain-city"></i></div>
+           <p> Iconic Cities</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-place-of-worship"></i></div>
+           <p> Castles</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-person-swimming"></i></div>
+           <p> Amazing Pools</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-campground"></i></div>
+           <p> Camping</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-solid fa-cow"></i></div>
+           <p> Farm Stays</p>
+        </div>
+        <div class="filter">
+           <div><i class="fa-regular fa-snowflake"></i></div>
+           <p> Arctic</p>
+        </div>
+        <div class="tax-toggle">
+             <div class="form-check-reverse form-switch">
+             <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+             <label class="form-check-label" for="switchCheckDefault">After the taxes</label>
+             </div>
+        </div>
+    </div>
+    <div class="row row-cols-lg-3 row-cols-md-3 row-cols-sm-2 row-cols-1 g-4 mt-3">
         <% for(let listing of allListings){%>
             <a href="/listings/<%= listing._id %>" class="listing-link">
 
@@ -15,6 +106,7 @@
     <p class="card-text">
        <b> <%= listing.title %> </b><br/>
         &#x20B9;<%= listing.price.toLocaleString("en-IN") %> /night <br/>
+        <i class="tax-info"> &nbsp; &nbsp; +18% GST </i>
 
     </p>
   </div>
@@ -26,8 +118,24 @@
  <!--  <ul>
     <% for(let listing of allListings){%>
     <li><a href = "/listings/<%= listing._id%>"><%= listing.title %></a></li>
-<% } %> Here was the old code for listing all listings in a ul li format. Kindly see this evrytime you edit this file.
+<% } %> Here was the old code for listing all listings in a ul li format. Kindly see this every time you edit this file.
 </ul> --> 
 </body>
+
+
+
+<script>
+    let taxSwitch = document.getElementById("switchCheckDefault");
+    taxSwitch.addEventListener("change", () =>
+    {
+        let taxInfo = document.getElementsByClassName("tax-info");
+        const show = taxSwitch.checked;
+        for (let info of taxInfo) {
+            info.style.display = show ? "block" : "none";
+        }
+    })
+</script>
+
+
 
 
