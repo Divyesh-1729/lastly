@@ -25,5 +25,12 @@ router.route("/login") //Using route chaining to keep the code clean and organiz
 
 router.get("/logout",userController.logout); //Logout route);
 
+router.get("/privacy", (req, res) => {
+    res.render("privacy.ejs");
+});
+
+router.get("/terms", (req, res) => {
+    res.render("terms.ejs");
+});
 
 module.exports = router;

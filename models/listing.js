@@ -20,6 +20,11 @@ const listingSchema = new Schema({
   price: { type: Number, required: true },
   location: String,
   country: String,
+  category: {
+    type: String,
+    enum: ['Trending', 'Iconic City', 'Amazing Pools', 'Beach', 'Amazing Views', 'Cabins', 'Lakefront', 'Mountain', 'Castles', 'Camping', 'Farms', 'Arctic'],
+    default: 'Trending'
+  },
   owner: {
     type: Schema.Types.ObjectId,
     ref: 'User'

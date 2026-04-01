@@ -4,8 +4,12 @@ const { forwardGeocode } = require("../utils/geocode.js");
 
 
 module.exports.index = async (req, res) => {
-    const allListings = await Listing.find({});
-    res.render("listings/index", {allListings});
+    let filter = {};
+    if(req.query.category) {
+        filter.category = req.query.category;
+    }
+    const allListings = await Listing.find(filter);
+    res.render("listings/index", {allListings, selectedCategory: req.query.category || null});
 };
 
 
@@ -45,7 +49,7 @@ module.exports.createListing = async (req, res) => { //validateListing is middle
     let filename = req.file.filename;
     console.log(url, "..", filename);
    
-    let{title, description, image, price, location, country} = req.body;
+    let{title, description, image, price, location, country, category} = req.body;
     const newListing = new Listing({
         title,
         description,
@@ -53,6 +57,7 @@ module.exports.createListing = async (req, res) => { //validateListing is middle
         price,
         location,
         country,
+        category,
     });
     newListing.owner = req.user._id;
     newListing.image = {url, filename};

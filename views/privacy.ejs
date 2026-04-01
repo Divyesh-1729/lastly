@@ -1,0 +1,71 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="container mt-5 mb-5" style="max-width: 900px;">
+    <h1 class="mb-4 text-center" style="font-size: 3rem; font-weight: bold;">Privacy Policy</h1>
+    <p class="text-center text-muted mb-5">Last updated: <%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+    
+    <hr class="mb-5" />
+
+    <section class="mb-5">
+        <p><strong>At Wanderlust, we value your trust.</strong> This policy describes how we collect, use, and protect your personal information when you use our hotel booking services.</p>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">1. Information We Collect</h2>
+        <p>We collect information you provide directly to us, such as when you create an account, make a reservation, or contact customer support. This includes:</p>
+        <ul class="ms-4">
+            <li>Personal details (Name, Email, Phone Number)</li>
+            <li>Booking details (Travel dates, Guest count)</li>
+            <li>Payment information (Processed securely via third-party providers)</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">2. How We Use Your Data</h2>
+        <p>Your data allows us to provide you with seamless travel experiences. Specifically, we use it to:</p>
+        <ul class="ms-4">
+            <li>Process and confirm your hotel reservations</li>
+            <li>Send you booking confirmations and travel updates</li>
+            <li>Improve our platform and prevent fraud</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">3. Data Security</h2>
+        <p>We implement industry-standard security measures to protect your data. However, no security system is impenetrable, and we cannot guarantee the security of our systems 100%.</p>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">4. Cookies & Tracking</h2>
+        <p><strong>Yes, we use cookies.</strong> 🍪</p>
+        <div class="alert alert-info" role="alert">
+            <strong>Sadly,</strong> they are not the chocolate chip kind (we wish 😔). They are small text files that help our site remember who you are so you don't have to log in every 5 seconds.
+        </div>
+        <p><strong>We use them to:</strong></p>
+        <ul class="ms-4">
+            <li>Keep you signed in</li>
+            <li>Remember your search preferences</li>
+            <li>Analyze which hotels are trending</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">Have Questions?</h2>
+        <p>If you have questions about this policy, please contact our Data Protection Officer at <a href="mailto:privacy@wanderlust.com" style="color: #e74c3c;">privacy@wanderlust.com</a></p>
+    </section>
+
+    <hr class="my-5" />
+
+    <section class="text-center">
+        <p class="text-muted" style="font-style: italic; font-size: 0.95rem;">Legal Department & Coffee Consumption managed by:</p>
+        
+        <div class="my-4">
+            <div style="display: inline-block; border: 2px solid #e74c3c; border-radius: 8px; padding: 20px 30px; background-color: #fff;">
+                <p style="color: #e74c3c; font-weight: bold; font-size: 1.3rem; margin: 0;">APPROVED</p>
+                <p style="margin: 5px 0 0 0; font-weight: 600;">Maniklal Advocate ☕</p>
+            </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">(Note: Maniklal is a developer, not a lawyer. Please don't actually sue us, we have no money. only code.)</p>
+    </section>
+</div>

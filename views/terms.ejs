@@ -1,0 +1,65 @@
+<%- layout('layouts/boilerplate') %>
+
+<div class="container mt-5 mb-5" style="max-width: 900px;">
+    <h1 class="mb-4 text-center" style="font-size: 3rem; font-weight: bold;">Terms & Conditions</h1>
+    <p class="text-center text-muted mb-5">Last updated: <%= new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+    
+    <hr class="mb-5" />
+
+    <section class="mb-5">
+        <p><strong>Please read these terms carefully before using Wanderlust.</strong> By making a booking, you agree to these terms.</p>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">1. Our Services</h2>
+        <p>Wanderlust acts as an intermediary between you (the Guest) and the property (the Hotel). When you make a booking, you enter into a direct contract with the Hotel. We transmit your details to the Hotel and send you a confirmation email.</p>
+        <div class="alert alert-info" role="alert">
+            <strong>Note:</strong> We do not own, manage, or operate the hotels listed on our platform. If the AC is broken, please yell at the hotel manager, not us. 😆
+        </div>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">2. Bookings & Payments</h2>
+        <ul class="ms-4">
+            <li>You must be at least 18 years old to make a reservation.</li>
+            <li>Payment is required to confirm your booking.</li>
+            <li>Prices displayed include all taxes unless stated otherwise.</li>
+        </ul>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">3. Cancellations & Refunds</h2>
+        <p>Cancellation policies vary by hotel. If you cancel a "Non-Refundable" booking, you will not receive a refund. (Sorry, that money is gone 💚 ).</p>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">4. Limitation of Liability</h2>
+        <p>Wanderlust is not liable for issues related to the hotel stay itself (e.g., room quality, amenities, safety). Any complaints regarding the stay must be resolved directly with the hotel management.</p>
+    </section>
+
+    <section class="mb-5">
+        <h2 class="mb-3">5. User Conduct</h2>
+        <p><strong>You agree not to:</strong></p>
+        <ul class="ms-4">
+            <li>Use the platform for any fraudulent or illegal purpose.</li>
+            <li>Make false or speculative reservations.</li>
+            <li>Copy or scrape content from our website without permission.</li>
+        </ul>
+        <p>or we will have to call the cyber police. 🚨</p>
+    </section>
+
+    <hr class="my-5" />
+
+    <section class="text-center">
+        <p class="text-muted" style="font-style: italic; font-size: 0.95rem;">Legal Department & Coffee Consumption managed by:</p>
+        
+        <div class="my-4">
+            <div style="display: inline-block; border: 2px solid #e74c3c; border-radius: 8px; padding: 20px 30px; background-color: #fff;">
+                <p style="color: #e74c3c; font-weight: bold; font-size: 1.3rem; margin: 0;">APPROVED</p>
+                <p style="margin: 5px 0 0 0; font-weight: 600;">Maniklal Advocate ☕</p>
+            </div>
+        </div>
+
+        <p style="font-size: 0.85rem; color: #666; margin-top: 20px;">(Note: Maniklal is a developer, not a lawyer. Please don't actually sue us, we have no money. only code.)</p>
+    </section>
+</div>

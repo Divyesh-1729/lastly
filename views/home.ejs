@@ -1,0 +1,457 @@
+<%- layout('layouts/boilerplate') %>
+
+<style>
+    /* Hero Section */
+    .hero-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)), 
+                    url('https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=1200&h=600&fit=crop');
+        background-size: cover;
+        background-position: center;
+        min-height: 500px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        color: white;
+        border-radius: 15px;
+        margin-bottom: 60px;
+    }
+
+    .hero-content h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        margin-bottom: 20px;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+
+    .hero-content p {
+        font-size: 1.5rem;
+        margin-bottom: 30px;
+        text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    .btn-explore {
+        background-color: #e74c3c;
+        color: white;
+        padding: 15px 40px;
+        font-size: 1.1rem;
+        border: none;
+        border-radius: 50px;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-explore:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    /* Features Section */
+    .features-section {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 30px;
+        margin-bottom: 80px;
+    }
+
+    .feature-card {
+        border: 2px solid #ddd;
+        border-radius: 15px;
+        padding: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        background-color: white;
+        min-height: 300px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .feature-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-size: cover;
+        background-position: center;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 1;
+    }
+
+    .feature-card:nth-child(1)::before {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=500&h=500&fit=crop');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .feature-card:nth-child(2)::before {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=500&h=500&fit=crop');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .feature-card:nth-child(3)::before {
+        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1552664730-d307ca884978?w=500&h=500&fit=crop');
+        background-size: cover;
+        background-position: center;
+    }
+
+    .feature-card:nth-child(2) {
+        border-color: #e74c3c;
+        background-color: #ffe8e8;
+    }
+
+    .feature-card:hover {
+        border-color: #e74c3c;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        transform: translateY(-10px);
+    }
+
+    .feature-card:hover::before {
+        opacity: 1;
+    }
+
+    .feature-card .icon {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .feature-card p {
+        color: #666;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 2;
+    }
+
+    .feature-card:hover h3,
+    .feature-card:hover p {
+        color: white;
+        text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .feature-card:hover .icon {
+        transform: scale(1.1);
+    }
+
+    /* For Travelers Section */
+    .travelers-section {
+        background: url('https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=1000&h=600&fit=crop');
+        background-size: cover;
+        background-position: center;
+        border-radius: 15px;
+        padding: 60px 40px;
+        margin-bottom: 60px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .travelers-section::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(0,0,0,0.3) 100%);
+        z-index: 1;
+    }
+
+    .travelers-content {
+        position: relative;
+        z-index: 2;
+        color: white;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .travelers-left h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #e74c3c;
+    }
+
+    .travelers-left p {
+        font-size: 1.1rem;
+        margin-bottom: 25px;
+    }
+
+    .curated-journeys {
+        background: rgba(0,0,0,0.6);
+        padding: 20px;
+        border-radius: 10px;
+        margin-top: 20px;
+        display: inline-block;
+    }
+
+    .curated-journeys h4 {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 10px;
+    }
+
+    .curated-journeys p {
+        font-size: 0.95rem;
+    }
+
+    /* Host Section */
+    .host-section {
+        background: linear-gradient(135deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.3) 100%), 
+                    url('https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=1000&h=600&fit=crop');
+        background-size: cover;
+        background-position: center;
+        border: 3px solid #e74c3c;
+        border-radius: 15px;
+        padding: 60px 40px;
+        margin-bottom: 60px;
+        position: relative;
+    }
+
+    .host-content {
+        display: grid;
+        grid-template-columns: auto 1fr;
+        gap: 60px;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .host-icon {
+        font-size: 5rem;
+        color: #e74c3c;
+    }
+
+    .host-right h2 {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #e74c3c;
+        margin-bottom: 10px;
+    }
+
+    .host-right p {
+        color: white;
+        font-size: 1.1rem;
+    }
+
+    .host-box {
+        background: rgba(0, 0, 0, 0.7);
+        padding: 20px;
+        border-radius: 10px;
+        color: white;
+        max-width: 300px;
+    }
+
+    .host-box h4 {
+        color: #e74c3c;
+        margin-bottom: 10px;
+    }
+
+    .btn-get-started {
+        background-color: #e74c3c;
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        margin-top: 15px;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-get-started:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+    }
+
+    /* CTA Section */
+    .cta-section {
+        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+                    url('https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&h=500&fit=crop');
+        background-size: cover;
+        background-position: center;
+        border-radius: 15px;
+        padding: 80px 40px;
+        text-align: center;
+        color: white;
+        margin-bottom: 60px;
+    }
+
+    .cta-section h2 {
+        font-size: 3rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .cta-section p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+    }
+
+    .cta-buttons {
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .btn-signup, .btn-login {
+        padding: 12px 35px;
+        font-size: 1rem;
+        border: 2px solid white;
+        border-radius: 50px;
+        background-color: transparent;
+        color: white;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-signup:hover {
+        background-color: #e74c3c;
+        border-color: #e74c3c;
+    }
+
+    .btn-login:hover {
+        background-color: white;
+        color: #333;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+        .hero-content h1 {
+            font-size: 2rem;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+        }
+
+        .travelers-content,
+        .host-content {
+            grid-template-columns: 1fr;
+        }
+
+        .travelers-left h2 {
+            font-size: 1.8rem;
+        }
+
+        .host-right {
+            text-align: center;
+        }
+
+        .cta-section h2 {
+            font-size: 2rem;
+        }
+    }
+</style>
+
+<div class="container-fluid px-0">
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="hero-content">
+            <div>
+                <h1>Welcome to Wanderlust</h1>
+                <p>Find your next perfect stay, from cabins to castles.</p>
+                <a href="/listings" class="btn-explore">Explore Hotels</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container my-5">
+    <!-- Features Section -->
+    <div class="features-section">
+        <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-house" style="color: #e74c3c;"></i></div>
+            <h3>Home away from Home</h3>
+            <p>Discover unique homes and stays perfect for your trip.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-shield-halved" style="color: #e74c3c;"></i></div>
+            <h3>Book with Confidence</h3>
+            <p>Enjoy peace of mind with our secure booking protection.</p>
+        </div>
+        <div class="feature-card">
+            <div class="icon"><i class="fa-solid fa-headset" style="color: #e74c3c;"></i></div>
+            <h3>24/7 Support</h3>
+            <p>Our team is here to help you, day or night.</p>
+        </div>
+    </div>
+
+    <!-- For Travelers Section -->
+    <div class="travelers-section">
+        <div class="travelers-content">
+            <div class="travelers-left">
+                <h2 style="color: #e74c3c;">For Travelers</h2>
+                <p>Find unique stays and experiences tailored just for you.</p>
+                <a href="/listings" class="btn-explore">Explore</a>
+                <div class="curated-journeys">
+                    <h4><i class="fa-solid fa-check" style="color: #e74c3c;"></i> Curated Journeys</h4>
+                    <p>Every stay is verified for quality. From hidden cabins to luxury villas, we ensure your trip is perfect.</p>
+                </div>
+            </div>
+            <div class="travelers-right">
+                <div style="text-align: center;">
+                    <div style="font-size: 4rem; color: #e74c3c;"><i class="fa-solid fa-suitcase"></i></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Host Section -->
+    <div class="host-section">
+        <div class="host-content">
+            <div class="host-icon"><i class="fa-solid fa-key"></i></div>
+            <div class="host-box">
+                <h4><i class="fa-solid fa-money-bill"></i> Earn on Your Terms</h4>
+                <p>Join millions of hosts who are turning their extra space into extra income to fund their own dreams.</p>
+            </div>
+            <div class="host-right">
+                <h2>Become a Host</h2>
+                <p>Earn extra income and unlock new opportunities by sharing your space.</p>
+                <% if(currentUser) { %>
+                    <a href="/listings/new" class="btn-get-started">Get Started</a>
+                <% } else { %>
+                    <a href="/signup" class="btn-get-started">Get Started</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+
+    <!-- CTA Section -->
+    <div class="cta-section">
+        <h2>Ready to start your journey?</h2>
+        <p>Join Wanderlust today. Sign up to get the latest travel deals.</p>
+        <div class="cta-buttons">
+            <% if(currentUser) { %>
+                <a href="/listings" class="btn-login">Explore Now</a>
+            <% } else { %>
+                <a href="/signup" class="btn-signup">Sign Up</a>
+                <a href="/login" class="btn-login">Log In</a>
+            <% } %>
+        </div>
+    </div>
+</div>

@@ -5,7 +5,7 @@
 
     <h2>Edit your Listing</h2>
 
-    <form method="post" action="/listings/<%= listing._id %>?_method=PUT">
+    <form method="post" action="/listings/<%= listing._id %>?_method=PUT" enctype="multipart/form-data">
 
       <div class="mb-3">
         <label class="form-label">Title:</label>
@@ -18,13 +18,39 @@
       </div>
 
       <div class="mb-3">
-        <label class="form-label">Image URL:</label>
-        <input name="image" value="<%= listing.image %>" type="text" class="form-control">
+        <label class="form-label">Upload Image:</label>
+        <% if(listing.image && listing.image.url) { %>
+          <div class="mb-2">
+            <img src="<%= listing.image.url %>" alt="Current listing image" style="max-width: 200px; max-height: 200px; margin-bottom: 10px;">
+            <p class="text-muted">Current Image</p>
+          </div>
+        <% } %>
+        <input name="image" type="file" class="form-control">
+        <small class="text-muted">Leave empty to keep the current image</small>
       </div>
 
       <div class="mb-3">
         <label class="form-label">Location:</label>
         <input name="location" value="<%= listing.location %>" class="form-control">
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label">Select Category:</label>
+        <select name="category" class="form-control">
+            <option value="">Pick a Vibe...</option>
+            <option value="Trending" <% if(listing.category === 'Trending') { %>selected<% } %>>Trending</option>
+            <option value="Iconic City" <% if(listing.category === 'Iconic City') { %>selected<% } %>>Iconic City</option>
+            <option value="Amazing Pools" <% if(listing.category === 'Amazing Pools') { %>selected<% } %>>Amazing Pools</option>
+            <option value="Beach" <% if(listing.category === 'Beach') { %>selected<% } %>>Beach</option>
+            <option value="Amazing Views" <% if(listing.category === 'Amazing Views') { %>selected<% } %>>Amazing Views</option>
+            <option value="Cabins" <% if(listing.category === 'Cabins') { %>selected<% } %>>Cabins</option>
+            <option value="Lakefront" <% if(listing.category === 'Lakefront') { %>selected<% } %>>Lakefront</option>
+            <option value="Mountain" <% if(listing.category === 'Mountain') { %>selected<% } %>>Mountain</option>
+            <option value="Castles" <% if(listing.category === 'Castles') { %>selected<% } %>>Castles</option>
+            <option value="Camping" <% if(listing.category === 'Camping') { %>selected<% } %>>Camping</option>
+            <option value="Farms" <% if(listing.category === 'Farms') { %>selected<% } %>>Farms</option>
+            <option value="Arctic" <% if(listing.category === 'Arctic') { %>selected<% } %>>Arctic</option>
+        </select>
       </div>
 
       <div class="row">

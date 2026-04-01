@@ -3,33 +3,38 @@
     <style>
         #filters {
             display: flex;
-            flex-wrap: wrap;
-            gap: 20px;
+            gap: 10px;
             margin-top: 1rem;
             margin-bottom: 0.5rem;
             padding: 0.5rem 0.5rem;
             align-items: center;
+            justify-content: flex-start;
         }
         .filter{
             text-align: center;
-            padding: 0.5rem 0;
+            padding: 0.25rem 0;
             opacity:0.7;
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            flex: 1;
+            min-width: 60px;
+            transition: opacity 0.3s ease;
         }
         .filter:hover{
             opacity:1;
             cursor: pointer;
         }
         .filter i{
-            font-size: 1.5rem;
-            margin-bottom: 0.3rem;
+            font-size: 1.3rem;
+            margin-bottom: 0.2rem;
         }
         .filter p{
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             margin: 0;
             font-weight: 500;
+            word-wrap: break-word;
         }
         .tax-info{
             display: none;
@@ -44,6 +49,7 @@
             display:flex;
             align-items: center;
             margin-left: auto;
+            flex-shrink: 0;
         }
         </style>
    <%# Displaying flash success messages. Instead of here we will flash them in boilerplate.ejs so that they appear on all pages. %>
@@ -52,39 +58,51 @@
         <button>Create New Listing</button>
     </form> -->
     <div id="filters">
-        <div class="filter">
+        <div class="filter" data-category="Trending">
            <div> <i class="fa-solid fa-fire"></i></div>
            <p> Trending</p>
         </div>
-        <div class="filter">
-           <div><i class="fa-solid fa-bed"></i></div>
-           <p> Bedrooms</p>
+        <div class="filter" data-category="Iconic City">
+           <div><i class="fa-solid fa-gopuram"></i></div>
+           <p> Iconic City</p>
         </div>
-        <div class="filter">
-           <div><i class="fa-solid fa-mountain"></i></div>
-           <p> Mountains</p>
-        </div>
-        <div class="filter">
-           <div><i class="fa-solid fa-mountain-city"></i></div>
-           <p> Iconic Cities</p>
-        </div>
-        <div class="filter">
-           <div><i class="fa-solid fa-place-of-worship"></i></div>
-           <p> Castles</p>
-        </div>
-        <div class="filter">
+        <div class="filter" data-category="Amazing Pools">
            <div><i class="fa-solid fa-person-swimming"></i></div>
            <p> Amazing Pools</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="Beach">
+           <div><i class="fa-solid fa-water"></i></div>
+           <p> Beach</p>
+        </div>
+        <div class="filter" data-category="Amazing Views">
+           <div><i class="fa-solid fa-mountain-sun"></i></div>
+           <p> Amazing Views</p>
+        </div>
+        <div class="filter" data-category="Cabins">
+           <div><i class="fa-solid fa-house"></i></div>
+           <p> Cabins</p>
+        </div>
+        <div class="filter" data-category="Lakefront">
+           <div><i class="fa-solid fa-water"></i></div>
+           <p> Lakefront</p>
+        </div>
+        <div class="filter" data-category="Mountain">
+           <div><i class="fa-solid fa-mountain"></i></div>
+           <p> Mountain</p>
+        </div>
+        <div class="filter" data-category="Castles">
+           <div><i class="fa-solid fa-chess-rook"></i></div>
+           <p> Castles</p>
+        </div>
+        <div class="filter" data-category="Camping">
            <div><i class="fa-solid fa-campground"></i></div>
            <p> Camping</p>
         </div>
-        <div class="filter">
-           <div><i class="fa-solid fa-cow"></i></div>
-           <p> Farm Stays</p>
+        <div class="filter" data-category="Farms">
+           <div><i class="fa-solid fa-tractor"></i></div>
+           <p> Farms</p>
         </div>
-        <div class="filter">
+        <div class="filter" data-category="Arctic">
            <div><i class="fa-regular fa-snowflake"></i></div>
            <p> Arctic</p>
         </div>
@@ -133,7 +151,27 @@
         for (let info of taxInfo) {
             info.style.display = show ? "block" : "none";
         }
-    })
+    });
+
+    // Handle category filter clicks
+    const filterButtons = document.querySelectorAll('.filter');
+    filterButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const category = button.getAttribute('data-category');
+            window.location.href = `/listings?category=${category}`;
+        });
+    });
+
+    // Highlight the selected category filter
+    const selectedCategory = '<%= selectedCategory %>';
+    if(selectedCategory && selectedCategory !== 'null') {
+        filterButtons.forEach(button => {
+            if(button.getAttribute('data-category') === selectedCategory) {
+                button.style.opacity = '1';
+                button.style.fontWeight = 'bold';
+            }
+        });
+    }
 </script>
 
 

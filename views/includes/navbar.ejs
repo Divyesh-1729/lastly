@@ -26,6 +26,48 @@
   .search-btn i {
     display: none;
   }
+  .add-listing-btn {
+    background-color: #e63946;
+    color: white;
+    border-radius: 25px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .add-listing-btn:hover {
+    background-color: #d62828;
+    color: white;
+  }
+  .signup-btn {
+    background-color: #0d6efd;
+    color: white;
+    border-radius: 25px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .signup-btn:hover {
+    background-color: #0b5ed7;
+    color: white;
+  }
+  .login-btn {
+    background-color: #198754;
+    color: white;
+    border-radius: 25px;
+    padding: 0.4rem 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  .login-btn:hover {
+    background-color: #157347;
+    color: white;
+  }
   .search-input{
     border-radius: 25px;
     padding: 0.4rem 1rem;
@@ -58,7 +100,11 @@
 
 <nav class="navbar navbar-expand-lg bg-body-tertiary border-bottom sticky-top">
   <div class="container">
-    <a class="navbar-brand brand-name" href="/listings"><i class="fa-regular fa-compass"></i>  Wanderlust</a>
+    <a class="navbar-brand brand-name" href="/">
+      <span style="font-size: 1.4rem; font-weight: bold; letter-spacing: -1px;">
+        W<i class="fa-regular fa-compass" style="color: #fe424d; margin: 0 2px;"></i>nderL<i class="fa-solid fa-location-dot" style="color: #fe424d; margin: 0 2px;"></i>st
+      </span>
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -78,13 +124,11 @@
       
       <div class="me-3">
         <% if(typeof currentUser !== 'undefined' && currentUser) { %>
-          <li class="nav-item">
-            <a class="nav-link" href="/listings/new">Add new Listing</a>
-          </li>
+          <a class="add-listing-btn" href="/listings/new" role="button"><b>Add new Listing</b></a>
         <% } %>
         <% if(typeof currentUser === 'undefined' || !currentUser) { %>
-          <a class="btn btn-outline-primary btn-sm" href="/signup" role="button"><b>Sign Up</b></a>
-          <a class="btn btn-outline-success btn-sm" href="/login" role="button"><b>Log In</b></a>
+          <a class="signup-btn" href="/signup" role="button"><b>Sign Up</b></a>
+          <a class="login-btn" href="/login" role="button"><b>Log In</b></a>
         <% } else { %>
           <span class="me-2">Hello, <strong><%= currentUser.username %></strong></span>
           <a class="btn btn-outline-danger btn-sm" href="/logout" role="button">Log Out</a>

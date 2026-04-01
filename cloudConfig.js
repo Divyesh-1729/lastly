@@ -11,7 +11,9 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary, //Using the configured Cloudinary instance
     params: {
         folder: 'wanderlust_DEV', //Folder in Cloudinary where images will be stored
-        allowed_formats: ['jpeg', 'png', 'jpg'] //Allowed image formats for upload
+        allowed_formats: ['jpeg', 'png', 'jpg'], //Allowed image formats for upload
+        quality: 'auto',
+        fetch_format: 'auto'
     }
 });
 
