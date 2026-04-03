@@ -119,16 +119,20 @@ module.exports.verifyPayment = async (req, res) => {
         booking.razorpayPaymentId = razorpay_payment_id;
         await booking.save();
         
-        // Send confirmation email
-        await sendBookingConfirmation(booking.user, booking, booking.listing);
+        // Send confirmation email (don't break if it fails)
+        try {
+            await sendBookingConfirmation(booking.user, booking, booking.listing);
+        } catch (emailError) {
+            console.error('Email sending failed:', emailError);
+        }
         
         req.flash('success', 'Booking confirmed! Confirmation email has been sent.');
-        res.redirect('/bookings');
+        return res.json({ success: true, redirectUrl: '/bookings' });
     } else {
         // Fetch booking for redirect in case of failure
         const booking = await Booking.findById(id).populate('listing');
         req.flash('error', 'Payment verification failed!');
-        res.redirect(`/listings/${booking.listing._id}/book`);
+        return res.json({ success: false, redirectUrl: `/listings/${booking.listing._id}/book` });
     }
 };
 

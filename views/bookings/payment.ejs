@@ -63,18 +63,28 @@
             razorpay_signature: response.razorpay_signature
         };
 
-        const res = await fetch('/bookings/' + bookingId + '/payment-callback', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(paymentData)
-        });
+        try {
+            const res = await fetch('/bookings/' + bookingId + '/payment-callback', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(paymentData),
+                credentials: 'include'
+            });
 
-        if (res.ok) {
-            window.location.href = '/bookings/' + bookingId;
-        } else {
-            alert('Payment verification failed!');
+            const data = await res.json();
+            console.log('Payment response:', data);
+            
+            if (data.success) {
+                window.location.href = data.redirectUrl;
+            } else {
+                alert('Payment verification failed!');
+                window.location.href = data.redirectUrl;
+            }
+        } catch (error) {
+            console.error('Payment error:', error);
+            alert('An error occurred during payment verification');
         }
     }
 </script>
