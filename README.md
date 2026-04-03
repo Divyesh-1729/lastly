@@ -64,6 +64,7 @@ WanderLust is a full-stack web application that allows users to explore, list, a
 ---
 
 ## 📂 Project Structure
+
 ├── models/
 ├── routes/
 ├── controllers/
@@ -100,6 +101,7 @@ git clone https://github.com/your-username/your-repo.git
 cd your-repo
 npm install
 npm start
+```
 
 🌐 Deployment
 
