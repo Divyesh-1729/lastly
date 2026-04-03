@@ -1,0 +1,80 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Payment Summary</h5>
+                    
+                    <div class="mb-3">
+                        <p><strong>Listing:</strong> <%= listing.title %></p>
+                        <p><strong>Check-in:</strong> <%= new Date(booking.checkInDate).toLocaleDateString() %></p>
+                        <p><strong>Check-out:</strong> <%= new Date(booking.checkOutDate).toLocaleDateString() %></p>
+                        <p><strong>Total Price:</strong> <span class="fs-5 text-success">₹<%= booking.totalPrice %></span></p>
+                    </div>
+
+                    <form id="paymentForm">
+                        <button type="button" class="btn btn-success w-100" onclick="handlePayment()">
+                            Pay ₹<%= booking.totalPrice %>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+    const bookingId = '<%= booking._id %>';
+    const orderId = '<%= order.id %>';
+    const keyId = '<%= razorpayKeyId %>';
+    const totalAmount = parseInt('<%= booking.totalPrice %>') * 100;
+    const userName = '<%= currentUser.username %>';
+    const userEmail = '<%= currentUser.email %>';
+
+    function handlePayment() {
+        const options = {
+            key: keyId,
+            amount: totalAmount,
+            currency: 'INR',
+            order_id: orderId,
+            handler: function(response) {
+                verifyPayment(response);
+            },
+            prefill: {
+                name: userName,
+                email: userEmail
+            },
+            theme: {
+                color: '#3399cc'
+            }
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+    }
+
+    async function verifyPayment(response) {
+        const paymentData = {
+            razorpay_order_id: orderId,
+            razorpay_payment_id: response.razorpay_payment_id,
+            razorpay_signature: response.razorpay_signature
+        };
+
+        const res = await fetch('/bookings/' + bookingId + '/payment-callback', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(paymentData)
+        });
+
+        if (res.ok) {
+            window.location.href = '/bookings/' + bookingId;
+        } else {
+            alert('Payment verification failed!');
+        }
+    }
+</script>

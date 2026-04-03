@@ -125,6 +125,7 @@
       <div class="me-3">
         <% if(typeof currentUser !== 'undefined' && currentUser) { %>
           <a class="add-listing-btn" href="/listings/new" role="button"><b>Add new Listing</b></a>
+          <a class="add-listing-btn" href="/bookings" role="button"><b>My Bookings</b></a>
         <% } %>
         <% if(typeof currentUser === 'undefined' || !currentUser) { %>
           <a class="signup-btn" href="/signup" role="button"><b>Sign Up</b></a>

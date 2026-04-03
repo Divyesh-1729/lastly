@@ -1,0 +1,70 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Book <%= listing.title %></h2>
+            
+            <!-- Listing Details -->
+            <div class="card mb-4">
+                <img src="<%= listing.image.url %>" class="card-img-top" alt="<%= listing.title %>">
+                <div class="card-body">
+                    <h5 class="card-title"><%= listing.title %></h5>
+                    <p class="card-text"><%= listing.description %></p>
+                    <p class="card-text"><strong>Location:</strong> <%= listing.location %>, <%= listing.country %></p>
+                    <p class="card-text"><strong>Price:</strong> ₹<%= listing.price %> per night</p>
+                </div>
+            </div>
+
+            <!-- Booking Form -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Booking Details</h5>
+                    <form action="/listings/<%= listing._id %>/book" method="POST">
+                        <div class="mb-3">
+                            <label for="checkInDate" class="form-label">Check-in Date</label>
+                            <input type="date" class="form-control" id="checkInDate" name="checkInDate" required onchange="calculatePrice()">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="checkOutDate" class="form-label">Check-out Date</label>
+                            <input type="date" class="form-control" id="checkOutDate" name="checkOutDate" required onchange="calculatePrice()">
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><strong>Total Price:</strong></label>
+                            <p id="totalPrice" class="fs-5">₹0</p>
+                        </div>
+
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the terms and conditions
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Proceed to Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const pricePerNight = parseInt('<%= listing.price %>');
+    const listingId = '<%= listing._id %>';
+
+    function calculatePrice() {
+        const checkInDate = new Date(document.getElementById('checkInDate').value);
+        const checkOutDate = new Date(document.getElementById('checkOutDate').value);
+
+        if (checkInDate && checkOutDate && checkOutDate > checkInDate) {
+            const nights = Math.ceil((checkOutDate - checkInDate) / (1000 * 60 * 60 * 24));
+            const totalPrice = nights * pricePerNight;
+            document.getElementById('totalPrice').textContent = '₹' + totalPrice;
+        } else {
+            document.getElementById('totalPrice').textContent = '₹0';
+        }
+    }
+</script>

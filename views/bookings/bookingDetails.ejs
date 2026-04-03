@@ -1,0 +1,68 @@
+<% layout('/layouts/boilerplate') %>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <h2>Booking Details</h2>
+
+            <div class="card mb-4">
+                <img src="<%= booking.listing.image.url %>" class="card-img-top" alt="<%= booking.listing.title %>">
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title"><%= booking.listing.title %></h5>
+                    
+                    <table class="table">
+                        <tr>
+                            <td><strong>Location:</strong></td>
+                            <td><%= booking.listing.location %>, <%= booking.listing.country %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Check-in Date:</strong></td>
+                            <td><%= new Date(booking.checkInDate).toLocaleDateString() %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Check-out Date:</strong></td>
+                            <td><%= new Date(booking.checkOutDate).toLocaleDateString() %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Price per Night:</strong></td>
+                            <td>₹<%= booking.listing.price %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Total Price:</strong></td>
+                            <td class="fs-5 text-success">₹<%= booking.totalPrice %></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Booking Status:</strong></td>
+                            <td>
+                                <% if (booking.paymentStatus === 'completed') { %>
+                                    <span class="badge bg-success">Confirmed</span>
+                                <% } else if (booking.paymentStatus === 'pending') { %>
+                                    <span class="badge bg-warning">Pending Payment</span>
+                                <% } else { %>
+                                    <span class="badge bg-danger">Failed</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                        <% if (booking.razorpayPaymentId) { %>
+                            <tr>
+                                <td><strong>Payment ID:</strong></td>
+                                <td><%= booking.razorpayPaymentId %></td>
+                            </tr>
+                        <% } %>
+                    </table>
+
+                    <a href="/bookings" class="btn btn-secondary">Back to Bookings</a>
+                    
+                    <% if (booking.paymentStatus === 'pending') { %>
+                        <form action="/bookings/<%= booking._id %>?_method=DELETE" method="POST" style="display: inline;">
+                            <button type="submit" class="btn btn-danger" onclick="return confirm('Cancel this booking?')">Cancel Booking</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,4 +1,5 @@
 const Listing = require("./models/listing");
+const Booking = require("./models/booking");
 const ExpressError = require("./utils/ExpressError");
 const { listingSchema } = require("./schema.js");
 const { reviewSchema } = require("./schema.js");
@@ -35,6 +36,41 @@ module.exports.isOwner = async (req,res,next) => {
     req.flash("error", "You do not have permission to edit this listing!"); //Flash message if user is not the owner of the listing
     return res.redirect(`/listings/${id}`);
   }
+    next();
+};
+
+
+module.exports.isNotListingOwner = async (req, res, next) => {
+    let { id } = req.params;
+    let listing = await Listing.findById(id);
+    
+    if (!listing) {
+        req.flash("error", "Listing not found!");
+        return res.redirect("/listings");
+    }
+    
+    if (listing.owner.equals(res.locals.currentUser._id)) {
+        req.flash("error", "You cannot book your own listing!");
+        return res.redirect(`/listings/${id}`);
+    }
+    
+    next();
+};
+
+module.exports.isBookingOwner = async (req, res, next) => {
+    let { id } = req.params;
+    let booking = await Booking.findById(id);
+    
+    if (!booking) {
+        req.flash("error", "Booking not found!");
+        return res.redirect("/bookings");
+    }
+    
+    if (!booking.user.equals(res.locals.currentUser._id)) {
+        req.flash("error", "You do not have permission to access this booking!");
+        return res.redirect("/bookings");
+    }
+    
     next();
 };
 

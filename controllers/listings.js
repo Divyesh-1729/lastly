@@ -144,5 +144,5 @@ module.exports.searchListings = async (req, res) => {
         ]
     });
 
-    res.render("listings/index", {allListings: searchResults});
+    res.render("listings/index", {allListings: searchResults, selectedCategory: null});
 }

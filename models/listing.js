@@ -35,6 +35,12 @@ const listingSchema = new Schema({
       ref: 'Review'
     }
   ],
+  bookings: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Booking'
+    }
+  ],
   geometry: {
     type: {
       type: String,
