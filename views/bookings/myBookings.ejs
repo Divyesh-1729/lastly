@@ -17,6 +17,7 @@
                             
                             <p class="card-text">
                                 <small>
+                                    <strong>Hosted by:</strong> <%= booking.listing.owner.username %><br>
                                     <strong>Check-in:</strong> <%= new Date(booking.checkInDate).toLocaleDateString() %><br>
                                     <strong>Check-out:</strong> <%= new Date(booking.checkOutDate).toLocaleDateString() %><br>
                                     <strong>Total Price:</strong> ₹<%= booking.totalPrice %><br>

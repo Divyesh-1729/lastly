@@ -123,7 +123,7 @@ module.exports.verifyPayment = async (req, res) => {
         await sendBookingConfirmation(booking.user, booking, booking.listing);
         
         req.flash('success', 'Booking confirmed! Confirmation email has been sent.');
-        res.redirect(`/bookings/${id}`);
+        res.redirect('/bookings');
     } else {
         // Fetch booking for redirect in case of failure
         const booking = await Booking.findById(id).populate('listing');
