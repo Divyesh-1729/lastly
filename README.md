@@ -1,88 +1,112 @@
-# 🌍 WanderLust - Vacation Rental Platform
 
-WanderLust is a full-stack web application that allows users to explore, list, and manage vacation rental properties across the world. It provides a seamless experience for browsing unique stays like villas, cabins, beach houses, and more.
+# 🌍 WanderLust - Explore. Stay. Experience.
 
-🔗 Live Demo: https://wanderlust-m92b.onrender.com
+![GitHub repo size](https://img.shields.io/github/repo-size/Divyesh-1729/lastly?color=blue)
+![GitHub stars](https://img.shields.io/github/stars/Divyesh-1729/lastly?style=social)
+![GitHub forks](https://img.shields.io/github/forks/Divyesh-1729/lastly?style=social)
+![License](https://img.shields.io/badge/license-ISC-green)
+![Node.js](https://img.shields.io/badge/Node.js-Backend-brightgreen)
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-green)
+![Express](https://img.shields.io/badge/Express.js-Framework-black)
 
 ---
 
-## 🚀 Features
+## 🚀 Live Demo
 
-- 🔍 Browse and search rental properties
-- 🏡 Add and manage property listings
-- 🖼️ Upload images for listings (Cloud storage)
-- 💬 Flash messages for user interaction
-- 🔐 Authentication & Authorization (Login/Signup)
-- 📍 Filter listings based on categories and amenities
-- 📦 Session-based user management
-- 📧 Email integration (Nodemailer)
-- 💳 Payment integration (Razorpay)
+🔗 https://wanderlust-m92b.onrender.com
+
+---
+
+## 📸 Screenshots
+
+### 🏠 Home Page
+
+![Home](https://via.placeholder.com/800x400?text=Home+Page)
+
+### 📄 Listing Page
+
+![Listing](https://via.placeholder.com/800x400?text=Listing+Page)
+
+### ➕ Add Property
+
+![Add](https://via.placeholder.com/800x400?text=Add+Property)
+
+---
+
+## ✨ Features
+
+* 🔍 Search & explore rental properties
+* 🏡 Add / edit / delete listings
+* 🔐 User authentication (Login/Signup)
+* ☁️ Image upload via Cloudinary
+* 💳 Secure payments via Razorpay
+* 📧 Email notifications
+* ⚡ Flash messages & session handling
+* 📱 Responsive UI
 
 ---
 
 ## 🛠️ Tech Stack
 
 ### 💻 Frontend
-- EJS (Embedded JavaScript Templates)
-- HTML5
-- CSS3
-- Bootstrap
+
+* EJS
+* HTML5, CSS3
+* Bootstrap
 
 ### ⚙️ Backend
-- Node.js
-- Express.js
+
+* Node.js
+* Express.js
 
 ### 🗄️ Database
-- MongoDB
-- Mongoose
 
-### ☁️ Cloud & Storage
-- Cloudinary (Image Upload & Storage)
+* MongoDB + Mongoose
 
 ### 🔐 Authentication
-- Passport.js
-- Passport-Local
-- Passport-Local-Mongoose
 
-### 📦 Other Tools & Libraries
-- Joi (Validation)
-- Multer (File Upload)
-- Express-Session
-- Connect-Mongo (Session Store)
-- Dotenv (Environment Variables)
-- Nodemailer (Email Service)
-- Razorpay (Payment Gateway)
+* Passport.js
+* Passport-Local-Mongoose
 
----
+### ☁️ Services & APIs
 
-## 🔌 APIs & Integrations
-
-- ☁️ **Cloudinary API** → Image storage and management  
-- 💳 **Razorpay API** → Payment processing  
-- 📧 **Nodemailer SMTP** → Email notifications  
+* Cloudinary (Image Storage)
+* Razorpay (Payments)
+* Nodemailer (Emails)
 
 ---
 
 ## 📂 Project Structure
 
+```
 ├── models/
 ├── routes/
 ├── controllers/
 ├── views/
 ├── public/
 ├── utils/
-├── app.js / index.js
+├── app.js
 ├── package.json
+```
 
+---
+
+## 🔌 APIs Used
+
+* 📸 Cloudinary API
+* 💳 Razorpay API
+* 📧 Nodemailer SMTP
 
 ---
 
 ## ⚙️ Environment Variables
 
-Create a `.env` file and add:
+Create `.env` file:
+
+```
 PORT=3000
-MONGO_URI=your_mongodb_connection
-CLOUDINARY_CLOUD_NAME=your_cloud_name
+MONGO_URI=your_mongodb_uri
+CLOUDINARY_CLOUD_NAME=your_name
 CLOUDINARY_KEY=your_key
 CLOUDINARY_SECRET=your_secret
 SESSION_SECRET=your_secret
@@ -90,50 +114,45 @@ RAZORPAY_KEY_ID=your_key
 RAZORPAY_SECRET=your_secret
 EMAIL_USER=your_email
 EMAIL_PASS=your_password
-
+```
 
 ---
 
-## ▶️ Installation & Setup
+## ▶️ Installation
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/Divyesh-1729/lastly.git
+cd lastly
 npm install
 npm start
 ```
 
-🌐 Deployment
+---
 
-Deployed on Render
+## 🌐 Deployment
 
-📌 Future Improvements
-⭐ Wishlist / Favorites
-🧭 Google Maps integration
-📱 Responsive UI improvements
-🧾 Booking history
-🔎 Advanced search filters
-
-
-👨‍💻 Author
-
-Divyesh Puranik
-
-📜 License
-
-This project is licensed under the ISC License.
-
+Deployed on **Render**
 
 ---
 
-## 🔥 What I did for you
-- Proper **tech stack (based on your package.json)**
-- Real **features from your live site**
-- Clean **ATS / recruiter-friendly format**
-- Includes **APIs + deployment + env setup**
+## 🚀 Future Enhancements
+
+* ⭐ Wishlist system
+* 🗺️ Google Maps integration
+* 📱 Better mobile UI
+* 🧾 Booking history
+* 🔎 Advanced filters
 
 ---
 
-## 💡 Pro Tip (VERY IMPORTANT)
-Before pushing:
-- Replace:
+## 👨‍💻 Author
+
+**Divyesh Puranik**
+
+* GitHub: https://github.com/Divyesh-1729
+
+---
+
+## 📜 License
+
+ISC License
