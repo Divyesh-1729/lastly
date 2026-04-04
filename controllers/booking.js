@@ -152,16 +152,17 @@ module.exports.verifyPayment = async (req, res) => {
         
         console.log(`[Payment] Booking ${id} marked as completed`);
         
-        // Send confirmation email in BACKGROUND (don't wait)
-        sendBookingConfirmation(booking.user, booking, booking.listing)
-            .then(() => {
-                console.log(`✓ Confirmation email sent successfully to ${booking.user.email}`);
-            })
-            .catch((emailError) => {
-                console.error(`✗ Email sending error for ${booking.user.email}:`, emailError.message);
-            });
+        // Send confirmation email (wait for it to complete)
+        const emailSent = await sendBookingConfirmation(booking.user, booking, booking.listing);
         
-        req.flash('success', 'Booking confirmed! Confirmation email will be sent shortly.');
+        if (emailSent) {
+            console.log(`✓ Confirmation email sent successfully to ${booking.user.email}`);
+            req.flash('success', 'Booking confirmed! Confirmation email sent to ' + booking.user.email);
+        } else {
+            console.error(`✗ Email sending FAILED for ${booking.user.email}`);
+            req.flash('success', 'Booking confirmed!');
+            req.flash('error', 'Email could not be sent. Check console for details.');
+        }
         
         // Save session before sending JSON response to persist flash message
         req.session.save((err) => {
