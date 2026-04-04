@@ -105,6 +105,16 @@ module.exports.verifyPayment = async (req, res) => {
     const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
     const { id } = req.params;
     
+    // Validate input
+    if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+        console.error('[Payment] Missing payment verification data');
+        req.flash('error', 'Invalid payment data!');
+        req.session.save(() => {
+            return res.json({ success: false, redirectUrl: '/bookings' });
+        });
+        return;
+    }
+    
     // Verify signature
     const body = razorpay_order_id + '|' + razorpay_payment_id;
     const expectedSignature = crypto
@@ -112,12 +122,35 @@ module.exports.verifyPayment = async (req, res) => {
         .update(body.toString())
         .digest('hex');
     
+    console.log('[Payment] Verifying payment signature...');
+    
     if (expectedSignature === razorpay_signature) {
+        console.log('[Payment] ✓ Signature verification successful');
+        
         // Payment verified
         const booking = await Booking.findById(id).populate('user').populate('listing');
+        
+        if (!booking) {
+            console.error(`[Payment] Booking not found with ID: ${id}`);
+            req.flash('error', 'Booking not found!');
+            return req.session.save(() => {
+                return res.json({ success: false, redirectUrl: '/bookings' });
+            });
+        }
+        
+        if (!booking.user || !booking.user.email) {
+            console.error('[Payment] User or user email not found in booking');
+            req.flash('error', 'User information missing!');
+            return req.session.save(() => {
+                return res.json({ success: false, redirectUrl: '/bookings' });
+            });
+        }
+        
         booking.paymentStatus = 'completed';
         booking.razorpayPaymentId = razorpay_payment_id;
         await booking.save();
+        
+        console.log(`[Payment] Booking ${id} marked as completed`);
         
         // Send confirmation email in BACKGROUND (don't wait)
         sendBookingConfirmation(booking.user, booking, booking.listing)
@@ -138,6 +171,10 @@ module.exports.verifyPayment = async (req, res) => {
             return res.json({ success: true, redirectUrl: '/bookings' });
         });
     } else {
+        console.log('[Payment] ✗ Signature verification failed');
+        console.log(`Expected: ${expectedSignature}`);
+        console.log(`Received: ${razorpay_signature}`);
+        
         // Fetch booking for redirect in case of failure
         const booking = await Booking.findById(id).populate('listing');
         req.flash('error', 'Payment verification failed!');
@@ -147,7 +184,7 @@ module.exports.verifyPayment = async (req, res) => {
             if (err) {
                 console.error('Session save error:', err);
             }
-            return res.json({ success: false, redirectUrl: `/listings/${booking.listing._id}/book` });
+            return res.json({ success: false, redirectUrl: `/listings/${booking?.listing?._id || 'bookings'}/book` });
         });
     }
 };
@@ -155,7 +192,12 @@ module.exports.verifyPayment = async (req, res) => {
 // Show all bookings of logged-in user
 module.exports.showAllBookings = async (req, res) => {
     const bookings = await Booking.find({ user: req.user._id })
-        .populate('listing')
+        .populate({
+            path: 'listing',
+            populate: {
+                path: 'owner'
+            }
+        })
         .sort({ createdAt: -1 });
     
     res.render('bookings/myBookings', { bookings });
@@ -181,19 +223,29 @@ module.exports.cancelBooking = async (req, res) => {
     const { id } = req.params;
     const booking = await Booking.findById(id).populate('user').populate('listing');
     
+    if (!booking) {
+        req.flash('error', 'Booking not found!');
+        return res.redirect('/bookings');
+    }
+    
     if (booking.paymentStatus === 'completed') {
         req.flash('error', 'Cannot cancel a completed booking!');
         return res.redirect(`/bookings/${id}`);
     }
     
-    // Send cancellation email in BACKGROUND (don't wait)
-    sendCancellationEmail(booking.user, booking, booking.listing)
-        .then(() => {
-            console.log(`✓ Cancellation email sent successfully to ${booking.user.email}`);
-        })
-        .catch((emailError) => {
-            console.error(`✗ Cancellation email error for ${booking.user.email}:`, emailError.message);
-        });
+    // Validate user and booking data before sending email
+    if (booking.user && booking.user.email && booking.listing) {
+        // Send cancellation email in BACKGROUND (don't wait)
+        sendCancellationEmail(booking.user, booking, booking.listing)
+            .then(() => {
+                console.log(`✓ Cancellation email sent successfully to ${booking.user.email}`);
+            })
+            .catch((emailError) => {
+                console.error(`✗ Cancellation email error for ${booking.user.email}:`, emailError.message);
+            });
+    } else {
+        console.warn('[Booking] Missing user/listing data for cancellation email');
+    }
     
     await Booking.findByIdAndDelete(id);
     await User.findByIdAndUpdate(req.user._id, { $pull: { bookings: id } });

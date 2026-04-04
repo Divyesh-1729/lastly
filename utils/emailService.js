@@ -1,16 +1,35 @@
 const nodemailer = require('nodemailer');
 
+// Verify credentials exist before creating transporter
+const hasEmailCredentials = process.env.SMTP_USER && process.env.SMTP_PASSWORD;
+
+console.log(`[Email Service] SMTP credentials ${hasEmailCredentials ? '✓ LOADED' : '✗ MISSING'}`);
+
 // Create a transporter for Gmail
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASSWORD
+        user: process.env.SMTP_USER || 'not-set',
+        pass: process.env.SMTP_PASSWORD || 'not-set'
     }
 });
 
 // Send booking confirmation email
 module.exports.sendBookingConfirmation = async (user, booking, listing) => {
+    // Check if credentials are available
+    if (!hasEmailCredentials) {
+        console.warn('[Email Service] ⚠️ SMTP credentials not configured. Email will not be sent.');
+        console.warn(`SMTP_USER: ${process.env.SMTP_USER ? 'SET' : 'NOT SET'}`);
+        console.warn(`SMTP_PASSWORD: ${process.env.SMTP_PASSWORD ? 'SET' : 'NOT SET'}`);
+        return false;
+    }
+
+    // Validate user email
+    if (!user || !user.email) {
+        console.error('✗ User email not found in booking confirmation');
+        return false;
+    }
+
     try {
         const mailOptions = {
             from: process.env.SMTP_USER,
@@ -59,18 +78,31 @@ module.exports.sendBookingConfirmation = async (user, booking, listing) => {
             `
         };
 
+        console.log(`[Email] Sending confirmation email to: ${user.email}`);
         await transporter.sendMail(mailOptions);
         console.log(`✓ Booking confirmation email sent successfully to: ${user.email}`);
         return true;
     } catch (error) {
         console.error(`✗ Error sending booking confirmation email to ${user.email}:`, error.message);
-        console.error('Error details:', error);
+        console.error('Full error:', error);
         return false;
     }
 };
 
 // Send cancellation email
 module.exports.sendCancellationEmail = async (user, booking, listing) => {
+    // Check if credentials are available
+    if (!hasEmailCredentials) {
+        console.warn('[Email Service] ⚠️ SMTP credentials not configured. Email will not be sent.');
+        return false;
+    }
+
+    // Validate user email
+    if (!user || !user.email) {
+        console.error('✗ User email not found in cancellation email');
+        return false;
+    }
+
     try {
         const mailOptions = {
             from: process.env.SMTP_USER,
@@ -98,12 +130,13 @@ module.exports.sendCancellationEmail = async (user, booking, listing) => {
             `
         };
 
+        console.log(`[Email] Sending cancellation email to: ${user.email}`);
         await transporter.sendMail(mailOptions);
         console.log(`✓ Cancellation email sent successfully to: ${user.email}`);
         return true;
     } catch (error) {
         console.error(`✗ Error sending cancellation email to ${user.email}:`, error.message);
-        console.error('Error details:', error);
+        console.error('Full error:', error);
         return false;
     }
 };
