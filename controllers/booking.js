@@ -119,20 +119,40 @@ module.exports.verifyPayment = async (req, res) => {
         booking.razorpayPaymentId = razorpay_payment_id;
         await booking.save();
         
-        // Send confirmation email (don't break if it fails)
+        // Send confirmation email
         try {
-            await sendBookingConfirmation(booking.user, booking, booking.listing);
+            const emailSent = await sendBookingConfirmation(booking.user, booking, booking.listing);
+            if (emailSent) {
+                req.flash('success', 'Booking confirmed! Confirmation email has been sent.');
+                console.log(`Confirmation email sent successfully to ${booking.user.email}`);
+            } else {
+                req.flash('success', 'Booking confirmed! (Email sending delayed)');
+                console.warn(`Failed to send confirmation email to ${booking.user.email}`);
+            }
         } catch (emailError) {
-            console.error('Email sending failed:', emailError);
+            console.error('Email sending error:', emailError.message);
+            req.flash('success', 'Booking confirmed! Please check your email shortly.');
         }
         
-        req.flash('success', 'Booking confirmed! Confirmation email has been sent.');
-        return res.json({ success: true, redirectUrl: '/bookings' });
+        // Save session before sending JSON response to persist flash message
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+            }
+            return res.json({ success: true, redirectUrl: '/bookings' });
+        });
     } else {
         // Fetch booking for redirect in case of failure
         const booking = await Booking.findById(id).populate('listing');
         req.flash('error', 'Payment verification failed!');
-        return res.json({ success: false, redirectUrl: `/listings/${booking.listing._id}/book` });
+        
+        // Save session before sending JSON response
+        req.session.save((err) => {
+            if (err) {
+                console.error('Session save error:', err);
+            }
+            return res.json({ success: false, redirectUrl: `/listings/${booking.listing._id}/book` });
+        });
     }
 };
 
@@ -170,13 +190,22 @@ module.exports.cancelBooking = async (req, res) => {
         return res.redirect(`/bookings/${id}`);
     }
     
-    // Send cancellation email
-    await sendCancellationEmail(booking.user, booking, booking.listing);
+    // Send cancellation email with better error handling
+    try {
+        const emailSent = await sendCancellationEmail(booking.user, booking, booking.listing);
+        if (emailSent) {
+            console.log(`Cancellation email sent successfully for booking ${id}`);
+        } else {
+            console.warn(`Failed to send cancellation email for booking ${id}`);
+        }
+    } catch (emailError) {
+        console.error('Error sending cancellation email:', emailError.message);
+    }
     
     await Booking.findByIdAndDelete(id);
     await User.findByIdAndUpdate(req.user._id, { $pull: { bookings: id } });
     await Listing.findByIdAndUpdate(booking.listing._id, { $pull: { bookings: id } });
     
-    req.flash('success', 'Booking cancelled! Cancellation email has been sent.');
+    req.flash('success', 'Booking cancelled successfully!');
     res.redirect('/bookings');
 };

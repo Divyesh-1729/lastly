@@ -60,10 +60,11 @@ module.exports.sendBookingConfirmation = async (user, booking, listing) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log('Booking confirmation email sent to:', user.email);
+        console.log(`✓ Booking confirmation email sent successfully to: ${user.email}`);
         return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error(`✗ Error sending booking confirmation email to ${user.email}:`, error.message);
+        console.error('Error details:', error);
         return false;
     }
 };
@@ -98,10 +99,11 @@ module.exports.sendCancellationEmail = async (user, booking, listing) => {
         };
 
         await transporter.sendMail(mailOptions);
-        console.log('Cancellation email sent to:', user.email);
+        console.log(`✓ Cancellation email sent successfully to: ${user.email}`);
         return true;
     } catch (error) {
-        console.error('Error sending email:', error);
+        console.error(`✗ Error sending cancellation email to ${user.email}:`, error.message);
+        console.error('Error details:', error);
         return false;
     }
 };
