@@ -119,20 +119,16 @@ module.exports.verifyPayment = async (req, res) => {
         booking.razorpayPaymentId = razorpay_payment_id;
         await booking.save();
         
-        // Send confirmation email
-        try {
-            const emailSent = await sendBookingConfirmation(booking.user, booking, booking.listing);
-            if (emailSent) {
-                req.flash('success', 'Booking confirmed! Confirmation email has been sent.');
-                console.log(`Confirmation email sent successfully to ${booking.user.email}`);
-            } else {
-                req.flash('success', 'Booking confirmed! (Email sending delayed)');
-                console.warn(`Failed to send confirmation email to ${booking.user.email}`);
-            }
-        } catch (emailError) {
-            console.error('Email sending error:', emailError.message);
-            req.flash('success', 'Booking confirmed! Please check your email shortly.');
-        }
+        // Send confirmation email in BACKGROUND (don't wait)
+        sendBookingConfirmation(booking.user, booking, booking.listing)
+            .then(() => {
+                console.log(`✓ Confirmation email sent successfully to ${booking.user.email}`);
+            })
+            .catch((emailError) => {
+                console.error(`✗ Email sending error for ${booking.user.email}:`, emailError.message);
+            });
+        
+        req.flash('success', 'Booking confirmed! Confirmation email will be sent shortly.');
         
         // Save session before sending JSON response to persist flash message
         req.session.save((err) => {
@@ -190,17 +186,14 @@ module.exports.cancelBooking = async (req, res) => {
         return res.redirect(`/bookings/${id}`);
     }
     
-    // Send cancellation email with better error handling
-    try {
-        const emailSent = await sendCancellationEmail(booking.user, booking, booking.listing);
-        if (emailSent) {
-            console.log(`Cancellation email sent successfully for booking ${id}`);
-        } else {
-            console.warn(`Failed to send cancellation email for booking ${id}`);
-        }
-    } catch (emailError) {
-        console.error('Error sending cancellation email:', emailError.message);
-    }
+    // Send cancellation email in BACKGROUND (don't wait)
+    sendCancellationEmail(booking.user, booking, booking.listing)
+        .then(() => {
+            console.log(`✓ Cancellation email sent successfully to ${booking.user.email}`);
+        })
+        .catch((emailError) => {
+            console.error(`✗ Cancellation email error for ${booking.user.email}:`, emailError.message);
+        });
     
     await Booking.findByIdAndDelete(id);
     await User.findByIdAndUpdate(req.user._id, { $pull: { bookings: id } });
