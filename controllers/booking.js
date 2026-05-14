@@ -178,14 +178,14 @@ module.exports.verifyPayment = async (req, res) => {
         
         // Fetch booking for redirect in case of failure
         const booking = await Booking.findById(id).populate('listing');
-        req.flash('error', 'Payment verification failed!');
+        req.flash('error', 'Payment verification failed! Your booking is still pending. You can try again or cancel it.');
         
         // Save session before sending JSON response
         req.session.save((err) => {
             if (err) {
                 console.error('Session save error:', err);
             }
-            return res.json({ success: false, redirectUrl: `/listings/${booking?.listing?._id || 'bookings'}/book` });
+            return res.json({ success: false, redirectUrl: '/bookings' });
         });
     }
 };
