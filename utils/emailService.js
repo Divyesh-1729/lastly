@@ -24,13 +24,13 @@ module.exports.sendBookingConfirmation = async (user, booking, listing) => {
         console.warn('[Email Service] ⚠️ SMTP credentials not configured. Email will not be sent.');
         console.warn(`SMTP_USER: ${process.env.SMTP_USER ? 'SET' : 'NOT SET'}`);
         console.warn(`SMTP_PASSWORD: ${process.env.SMTP_PASSWORD ? 'SET' : 'NOT SET'}`);
-        return false;
+        throw new Error('SMTP credentials not configured');
     }
 
     // Validate user email
     if (!user || !user.email) {
         console.error('✗ User email not found in booking confirmation');
-        return false;
+        throw new Error('User email not found');
     }
 
     try {
@@ -84,11 +84,10 @@ module.exports.sendBookingConfirmation = async (user, booking, listing) => {
         console.log(`[Email] Sending confirmation email to: ${user.email}`);
         await transporter.sendMail(mailOptions);
         console.log(`✓ Booking confirmation email sent successfully to: ${user.email}`);
-        return true;
     } catch (error) {
         console.error(`✗ Error sending booking confirmation email to ${user.email}:`, error.message);
         console.error('Full error:', error);
-        return false;
+        throw error;
     }
 };
 
@@ -97,13 +96,13 @@ module.exports.sendCancellationEmail = async (user, booking, listing) => {
     // Check if credentials are available
     if (!hasEmailCredentials) {
         console.warn('[Email Service] ⚠️ SMTP credentials not configured. Email will not be sent.');
-        return false;
+        throw new Error('SMTP credentials not configured');
     }
 
     // Validate user email
     if (!user || !user.email) {
         console.error('✗ User email not found in cancellation email');
-        return false;
+        throw new Error('User email not found');
     }
 
     try {
@@ -136,10 +135,9 @@ module.exports.sendCancellationEmail = async (user, booking, listing) => {
         console.log(`[Email] Sending cancellation email to: ${user.email}`);
         await transporter.sendMail(mailOptions);
         console.log(`✓ Cancellation email sent successfully to: ${user.email}`);
-        return true;
     } catch (error) {
         console.error(`✗ Error sending cancellation email to ${user.email}:`, error.message);
         console.error('Full error:', error);
-        return false;
+        throw error;
     }
 };

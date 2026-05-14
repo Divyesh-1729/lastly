@@ -165,9 +165,6 @@ module.exports.verifyPayment = async (req, res) => {
         // Send confirmation email ASYNCHRONOUSLY in background (non-blocking)
         // This prevents email sending delays from blocking the user's redirect
         sendBookingConfirmation(booking.user, booking, booking.listing)
-            .then(() => {
-                console.log(`✓ Confirmation email sent successfully to ${booking.user.email}`);
-            })
             .catch((emailError) => {
                 console.error(`✗ Email sending error for ${booking.user.email}:`, emailError.message);
             });
@@ -238,9 +235,6 @@ module.exports.cancelBooking = async (req, res) => {
     if (booking.user && booking.user.email && booking.listing) {
         // Send cancellation email in BACKGROUND (don't wait)
         sendCancellationEmail(booking.user, booking, booking.listing)
-            .then(() => {
-                console.log(`✓ Cancellation email sent successfully to ${booking.user.email}`);
-            })
             .catch((emailError) => {
                 console.error(`✗ Cancellation email error for ${booking.user.email}:`, emailError.message);
             });
