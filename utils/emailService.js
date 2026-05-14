@@ -11,9 +11,6 @@ const transporter = nodemailer.createTransport({
     auth: {
         user: process.env.SMTP_USER || 'not-set',
         pass: process.env.SMTP_PASSWORD || 'not-set'
-    },
-    tls: {
-        rejectUnauthorized: false
     }
 });
 
@@ -24,13 +21,13 @@ module.exports.sendBookingConfirmation = async (user, booking, listing) => {
         console.warn('[Email Service] ⚠️ SMTP credentials not configured. Email will not be sent.');
         console.warn(`SMTP_USER: ${process.env.SMTP_USER ? 'SET' : 'NOT SET'}`);
         console.warn(`SMTP_PASSWORD: ${process.env.SMTP_PASSWORD ? 'SET' : 'NOT SET'}`);
-        throw new Error('SMTP credentials not configured');
+        return false;
     }
 
     // Validate user email
     if (!user || !user.email) {
         console.error('✗ User email not found in booking confirmation');
-        throw new Error('User email not found');
+        return false;
     }
 
     try {
@@ -84,10 +81,11 @@ module.exports.sendBookingConfirmation = async (user, booking, listing) => {
         console.log(`[Email] Sending confirmation email to: ${user.email}`);
         await transporter.sendMail(mailOptions);
         console.log(`✓ Booking confirmation email sent successfully to: ${user.email}`);
+        return true;
     } catch (error) {
         console.error(`✗ Error sending booking confirmation email to ${user.email}:`, error.message);
         console.error('Full error:', error);
-        throw error;
+        return false;
     }
 };
 
@@ -96,13 +94,13 @@ module.exports.sendCancellationEmail = async (user, booking, listing) => {
     // Check if credentials are available
     if (!hasEmailCredentials) {
         console.warn('[Email Service] ⚠️ SMTP credentials not configured. Email will not be sent.');
-        throw new Error('SMTP credentials not configured');
+        return false;
     }
 
     // Validate user email
     if (!user || !user.email) {
         console.error('✗ User email not found in cancellation email');
-        throw new Error('User email not found');
+        return false;
     }
 
     try {
@@ -135,9 +133,10 @@ module.exports.sendCancellationEmail = async (user, booking, listing) => {
         console.log(`[Email] Sending cancellation email to: ${user.email}`);
         await transporter.sendMail(mailOptions);
         console.log(`✓ Cancellation email sent successfully to: ${user.email}`);
+        return true;
     } catch (error) {
         console.error(`✗ Error sending cancellation email to ${user.email}:`, error.message);
         console.error('Full error:', error);
-        throw error;
+        return false;
     }
 };
